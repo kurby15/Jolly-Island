@@ -31,6 +31,7 @@ export const useAuth = () => useContext(AuthContext);
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState<'admin' | 'cashier'>('admin');
+  const routerBasename = import.meta.env.BASE_URL === '/' ? undefined : import.meta.env.BASE_URL;
 
   const logout = () => {
     setIsAuthenticated(false);
@@ -45,7 +46,7 @@ export default function App() {
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, logout }}>
-      <BrowserRouter>
+      <BrowserRouter basename={routerBasename}>
         <Routes>
           <Route path="/" element={isAuthenticated ? <Navigate to={defaultRoute} replace /> : <Navigate to="/login" replace />} />
           <Route path="/login" element={
