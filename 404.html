@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JollyIsland Management System</title>
+    <script>
+      (function () {
+        var base = '/jollyisland';
+        var path = window.location.pathname.replace(new RegExp('^' + base), '');
+        var target = base + '/?p=' + encodeURIComponent(path + window.location.search + window.location.hash);
+        window.location.replace(target);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
