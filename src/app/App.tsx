@@ -28,6 +28,20 @@ export const AuthContext = createContext<AuthContextType>({
 
 export const useAuth = () => useContext(AuthContext);
 
+function RequireAuth({
+  isAuthenticated,
+  children,
+}: {
+  isAuthenticated: boolean;
+  children: React.ReactNode;
+}) {
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+}
+
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState<"admin" | "cashier">("admin");
@@ -73,22 +87,131 @@ export default function App() {
           />
 
           {/* Cashier Routes */}
-          <Route path="/cashier" element={<CashierDashboard />} />
-          <Route path="/register" element={<CustomerRegistration />} />
-          <Route path="/rfid-assignment" element={<RFIDAssignment />} />
-          <Route path="/live-monitoring" element={<LiveMonitoring />} />
-          <Route path="/zone-monitoring" element={<ZoneMonitoring />} />
-          <Route path="/playtime" element={<PlaytimeTracking />} />
-          <Route path="/access-validation" element={<AccessValidation />} />
-          <Route path="/logs" element={<EntryExitLogs />} />
+          <Route
+            path="/cashier"
+            element={
+              <RequireAuth isAuthenticated={isAuthenticated}>
+                <CashierDashboard />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <RequireAuth isAuthenticated={isAuthenticated}>
+                <CustomerRegistration />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/rfid-assignment"
+            element={
+              <RequireAuth isAuthenticated={isAuthenticated}>
+                <RFIDAssignment />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/live-monitoring"
+            element={
+              <RequireAuth isAuthenticated={isAuthenticated}>
+                <LiveMonitoring />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/zone-monitoring"
+            element={
+              <RequireAuth isAuthenticated={isAuthenticated}>
+                <ZoneMonitoring />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/playtime"
+            element={
+              <RequireAuth isAuthenticated={isAuthenticated}>
+                <PlaytimeTracking />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/access-validation"
+            element={
+              <RequireAuth isAuthenticated={isAuthenticated}>
+                <AccessValidation />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/logs"
+            element={
+              <RequireAuth isAuthenticated={isAuthenticated}>
+                <EntryExitLogs />
+              </RequireAuth>
+            }
+          />
 
           {/* Admin Routes */}
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/packages" element={<PackageManagement />} />
-          <Route path="/rfid-management" element={<RFIDManagement />} />
-          <Route path="/cashier-management" element={<CashierManagement />} />
-          <Route path="/analytics" element={<AnalyticsReports />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route
+            path="/admin"
+            element={
+              <RequireAuth isAuthenticated={isAuthenticated}>
+                <AdminDashboard />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/packages"
+            element={
+              <RequireAuth isAuthenticated={isAuthenticated}>
+                <PackageManagement />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/rfid-management"
+            element={
+              <RequireAuth isAuthenticated={isAuthenticated}>
+                <RFIDManagement />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/cashier-management"
+            element={
+              <RequireAuth isAuthenticated={isAuthenticated}>
+                <CashierManagement />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/analytics"
+            element={
+              <RequireAuth isAuthenticated={isAuthenticated}>
+                <AnalyticsReports />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <RequireAuth isAuthenticated={isAuthenticated}>
+                <Settings />
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="*"
+            element={
+              isAuthenticated ? (
+                <Navigate to={defaultRoute} replace />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
         </Routes>
       </BrowserRouter>
     </AuthContext.Provider>
